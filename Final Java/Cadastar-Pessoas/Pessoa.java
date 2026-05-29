@@ -1,53 +1,68 @@
-// Importações necessárias para utilizar listas dinâmicas no Java (conforme Aula 08)
-import java.util.ArrayList; // Importa a classe concreta ArrayList, que é uma lista que cresce de tamanho automaticamente
-import java.util.List; // Importa a interface genérica List (aplicando o conceito de Abstração nas coleções)
+// Importações necessárias para utilizar listas dinâmicas no Java
+import java.util.ArrayList; // Importa a implementação da lista
+import java.util.List; // Importa a interface da lista
 
-// Classe Pessoa que HERDA (Herança) da nossa classe abstrata EntidadeBase. Representa o Cadastro de Pessoas.
-public class Pessoa extends EntidadeBase { // 'extends' é a palavra-chave que indica a herança em Java
+// Classe Pessoa que HERDA (Herança) da nossa classe abstrata EntidadeBase. 
+public class Pessoa extends EntidadeBase { // 'extends' indica a herança
     
     // Atributos privados garantindo o princípio do ENCAPSULAMENTO
     private String nome; // Atributo para armazenar o nome da pessoa
-    private String tipoPessoa; // Atributo em texto (String) para guardar se é Cliente, Fornecedor ou Ambos (Substituiu o Enum)
-    private List<Endereco> enderecos; // Composição: uma lista que guardará múltiplos objetos do tipo Endereco
+    private String tipoPessoa; // Atributo em texto para guardar o tipo (Cliente, Fornecedor, etc)
+    private List<Endereco> enderecos; // Composição: lista de múltiplos objetos do tipo Endereco
 
-    // Construtor da classe Pessoa: método chamado toda vez que fazemos 'new Pessoa(...)'
-    public Pessoa(int codigo, String nome, String tipoPessoa) { // Assinatura atualizada recebendo String para o tipoPessoa
-        super(codigo); // Chama o construtor da classe pai (EntidadeBase) para repassar e inicializar o atributo 'codigo'
-        this.nome = nome; // Atribui o nome recebido ao atributo da classe
-        this.tipoPessoa = tipoPessoa; // Atribui o tipo de pessoa recebido ao atributo da classe (Ex: "CLIENTE")
-        this.enderecos = new ArrayList<>(); // Inicializa a lista de endereços como vazia no momento da criação da pessoa
+    // Construtor da classe Pessoa
+    public Pessoa(int codigo, String nome, String tipoPessoa) { // Assinatura 
+        super(codigo); // Chama o construtor da classe pai (EntidadeBase) para inicializar o 'codigo'
+        this.nome = nome; // Atribui o nome
+        this.tipoPessoa = tipoPessoa; // Atribui o tipo de pessoa
+        this.enderecos = new ArrayList<>(); // Inicializa a lista de endereços vazia
     } // Fecha o construtor
 
-    // Método público para adicionar um novo endereço na lista desta pessoa
-    public void adicionarEndereco(Endereco endereco) { // Recebe um objeto Endereco pronto como parâmetro
-        this.enderecos.add(endereco); // Utiliza o método 'add' do ArrayList para guardar o endereço na lista interna
-    } // Fecha o método adicionarEndereco
+    // =========================================================================
+    // MÉTODOS GETTERS (Garantem o pilar do ENCAPSULAMENTO - Aula 10)
+    // O getCodigo() não está aqui porque já foi herdado da EntidadeBase!
+    // =========================================================================
 
-    // Método Getter para acessar a lista de endereços de forma segura (Encapsulamento)
-    public List<Endereco> getEnderecos() { // Assinatura do método que retorna a lista
-        return enderecos; // Retorna a lista atual de endereços
-    } // Fecha o método getEnderecos
+    public String getNome() { // Método público para ler o nome de fora da classe
+        return nome; // Retorna o valor do nome
+    } // Fecha método
 
-    // Sobrescrita do método toString (POLIMORFISMO) para exibir os dados da Pessoa de forma estruturada no console
-    @Override // Anotação que garante que estamos substituindo o comportamento padrão do Java
+    public String getTipoPessoa() { // Método público para ler o tipo da pessoa
+        return tipoPessoa; // Retorna o tipo de pessoa
+    } // Fecha método
+
+    // =========================================================================
+
+    // Método público para adicionar um novo endereço na lista
+    public void adicionarEndereco(Endereco endereco) { // Recebe o objeto endereço
+        this.enderecos.add(endereco); // Guarda o endereço na lista interna
+    } // Fecha o método
+
+    // Método Getter para acessar a lista de endereços
+    public List<Endereco> getEnderecos() { // Assinatura
+        return enderecos; // Retorna a lista de endereços
+    } // Fecha o método
+
+    // Sobrescrita do método toString (POLIMORFISMO)
+    @Override // Anotação de sobrescrita
     public String toString() { // Assinatura do método
-        // Retorna uma string formatada contendo o código (herdado do pai), o nome e o tipo em formato de texto
+        // Retorna a string formatada para exibição na tela
         return "Código: " + codigo + " | Nome: " + nome + " | Tipo: " + tipoPessoa; 
-    } // Fecha o método toString
+    } // Fecha o método
 
-    // Implementação obrigatória do método abstrato exigido pela classe pai (EntidadeBase)
-    @Override // Anotação de sobrescrita (Polimorfismo puro)
-    public String toTxtLine() { // Assinatura do método que diz como essa pessoa deve virar uma linha de texto no TXT
-        // Cria a string base juntando código, nome e o tipo (agora String direta, sem .name()), separados por ponto e vírgula
+    // Implementação obrigatória do método abstrato da classe pai
+    @Override // Anotação de sobrescrita (Polimorfismo)
+    public String toTxtLine() { // Assinatura do método
+        // Concatenação simples e clássica aprovada para o nível da disciplina
         String base = codigo + ";" + nome + ";" + tipoPessoa; 
         
-        // Inicia um loop (for-each) iterando sobre todos os endereços que essa pessoa tem na lista
-        for (Endereco end : enderecos) { // Para cada 'end' do tipo Endereco dentro da lista 'enderecos'
-            // Concatena os dados do endereço à string da pessoa, separando com o caractere "pipe" (|)
+        // Loop que passa por todos os endereços da pessoa
+        for (Endereco end : enderecos) { // Para cada endereço
+            // Adiciona o delimitador e a versão em texto do endereço
             base += "|" + end.toTxtLine(); 
         } // Fecha o loop
         
-        return base; // Retorna a linha completa, com os dados da pessoa e de todos os seus endereços, pronta para salvar no txt
-    } // Fecha o método toTxtLine
+        return base; // Retorna a linha completa
+    } // Fecha o método
     
 } // Fecha a classe Pessoa
