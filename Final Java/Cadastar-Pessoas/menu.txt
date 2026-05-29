@@ -1,0 +1,5 @@
+1. Adicionar Pessoa
+2. Listar Pessoas
+3. Atualizar Pessoa
+4. Excluir Pessoa
+5. Sair
